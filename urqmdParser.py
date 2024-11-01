@@ -4,7 +4,7 @@ import gc
 import sys
 import os
 
-class urqmdParser:
+class UrqmdParser:
     def __init__(self, pr14, eventNum, pr_save):
         """Initialize with the base filename, event number, and output path for Parquet files."""
         self.pr14 = pr14
@@ -120,5 +120,5 @@ if __name__ == "__main__":
     event_number = int(sys.argv[2])
     output_parquet = sys.argv[3]
 
-    parser = urqmdParser(input_basename, event_number, output_parquet)
+    parser = UrqmdParser(input_basename, event_number, output_parquet)
     parser.run()

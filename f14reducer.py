@@ -1,7 +1,7 @@
 import sys
 import os
 
-class f14Reducer:
+class F14Reducer:
     def __init__(self, filename, output_filename=None):
         """Initialize the f14Reducer with input and output filenames."""
         self.filename = filename
@@ -33,5 +33,5 @@ if __name__ == "__main__":
 
     # Initialize reducer and perform reduction
     filename = sys.argv[1]
-    reducer = f14Reducer(filename)
+    reducer = F14Reducer(filename)
     reducer.reduce()

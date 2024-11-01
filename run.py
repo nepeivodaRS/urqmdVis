@@ -1,6 +1,6 @@
 import os
-from f14reducer import f14Reducer
-from urqmdParser import urqmdParser
+from f14reducer import F14Reducer
+from urqmdParser import UrqmdParser
 from parquetToCsv import ParquetToCSVConverter
 
 # Input configuration
@@ -30,13 +30,13 @@ if not os.path.isfile(filename):
 try:
     # Step 1: File Reduction
     def reduce_file(input_filename):
-        reducer = f14Reducer(input_filename)
+        reducer = F14Reducer(input_filename)
         reducer.reduce()
         print("File reduction completed successfully.")
 
     # Step 2: Parsing and Parquet Conversion
     def parse_to_parquet(base_filename, event_num, parquet_output_path):
-        parser = urqmdParser(base_filename, event_num, parquet_output_path)
+        parser = UrqmdParser(base_filename, event_num, parquet_output_path)
         parser.run()
         print("Parsing and Parquet file creation completed successfully.")
 
