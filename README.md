@@ -98,6 +98,8 @@ To visualize the output in ParaView:
    - Select a folder to save the PNG files for the animation.
    - Set the image resolution to 1920 x 1080 and choose a compression level (0 is recommended for no compression).
 
-## License
+## Example of the final result
 
-This project is licensed under the MIT License.
+https://github.com/user-attachments/assets/23d5e7ac-aa0c-4a81-86fc-3fa9faba2ff5
+
+
