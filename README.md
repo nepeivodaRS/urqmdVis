@@ -16,7 +16,7 @@ The pipeline consists of four primary stages:
 1. **File Reduction**: Processes the `filename.f14` output file from UrQMD, removes unnecessary whitespace, and saves it as `filename_reduced.csv`.
 2. **Data Parsing**: Extracts detailed event information, calculates necessary parameters, and stores the processed data in Parquet format in the same folder as the input file.
 3. **Conversion to CSV**: Converts the Parquet data by grouping it into time snapshots, with each snapshot saved as a separate CSV file.
-4. **Visualization**: Uses the generated CSV files as input for the ParaView template `partMassVar.pvsm` to visualize the events.
+4. **Visualization**: Uses the generated CSV files as input for the ParaView template `paraViewState-massVar.pvsm` to visualize the events.
 
 ## File Descriptions
 
@@ -78,7 +78,7 @@ To visualize the output in ParaView:
 
 1. **Open ParaView**:
    - Run ParaView and navigate to `File -> Load State`.
-   - Load the `partMassVar.pvsm` template.
+   - Load the `paraViewState-massVar.pvsm` template.
 
 2. **Load the CSV File Sequence**:
    - Right-click on `event3_frame_0.csv*` in the pipeline and select `Change File`.
