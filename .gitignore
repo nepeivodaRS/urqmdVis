@@ -1,5 +1,7 @@
 *.parquet
 *.csv
 *.f14
+*.png
+*.mov
 .DS_Store
 __pycache__/
