@@ -22,6 +22,12 @@ class UrqmdParser:
         self.sliceStart = None
         self.evStart = None
 
+        # Create output folder if it doesn't exist
+        output_folder = os.path.dirname(self.pr_save)
+        if not os.path.isdir(output_folder):
+            os.makedirs(output_folder)
+            print(f"Created output folder: {output_folder}")
+
     def load_pr14(self):
         """Load and prepare data from the reduced CSV file."""
         try:

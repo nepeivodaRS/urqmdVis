@@ -6,22 +6,12 @@ from parquetToCsv import ParquetToCSVConverter
 # Input configuration
 filename = "../files/urqmd_AuAu_0-3fm/urqmd_1_14.dat"
 event_name = "event"
-event_number = 2
+event_number = 9
 
 # Output folder configuration
 parquet_folder = "output_parquet_files"
 csv_folder = "output_csv_files"
 parquet_file_path = f"./{parquet_folder}/{event_name}_{event_number}.parquet"
-
-def ensure_folder_exists(folder_path):
-    """Check if a folder exists; create it if not."""
-    if not os.path.exists(folder_path):
-        os.makedirs(folder_path)
-        print(f"Folder '{folder_path}' created.")
-
-# Ensure required folders exist
-ensure_folder_exists(csv_folder)
-ensure_folder_exists(parquet_folder)
 
 # Validate input file path
 if not os.path.isfile(filename):
