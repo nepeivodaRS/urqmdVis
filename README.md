@@ -8,7 +8,6 @@ This project provides a streamlined pipeline for visualizing collision events si
 2. [File Descriptions](#file-descriptions)
 3. [Usage](#usage)
 4. [ParaView Visualization](#paraview-visualization)
-5. [License](#license)
 
 ## Overview
 
