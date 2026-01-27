@@ -512,7 +512,7 @@ class UrqmdVisApp(ctk.CTk):
                 )
 
                 args = shlex.split(cmd)
-                os.spawnv(os.P_NOWAIT, args[0], args + ["--state", str(state_path)])
+                os.spawnvp(os.P_NOWAIT, args[0], args + ["--state", str(state_path)])
                 self.log_queue.put(("status", f"Started ParaView with state: {state_path}"))
                 self.log_queue.put(("status", f"CSV sequence: {csv_files[0]} ..."))
             except FileNotFoundError:

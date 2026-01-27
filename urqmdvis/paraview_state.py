@@ -20,6 +20,17 @@ def _replace_property(body, prop_name, new_inner):
     return pattern.sub(rf"\1{new_inner}\3", body, count=1)
 
 
+def _replace_elements(body, prop_name, new_elements):
+    pattern = re.compile(rf'(<Property name="{prop_name}"[^>]*>)(.*?)(</Property>)', re.DOTALL)
+
+    def repl(match):
+        head, inner, tail = match.group(1), match.group(2), match.group(3)
+        inner = re.sub(r"\s*<Element[^>]*/>\s*", "\n", inner)
+        return f"{head}\n{new_elements}\n{inner.strip()}\n{tail}"
+
+    return pattern.sub(repl, body, count=1)
+
+
 def generate_state(template_path, output_path, csv_files, scale, text_block):
     template_path = Path(template_path)
     output_path = Path(output_path)
@@ -34,38 +45,22 @@ def generate_state(template_path, output_path, csv_files, scale, text_block):
             f'\n        <Element index="{i}" value="{escape(path)}"/>'
             for i, path in enumerate(csv_files)
         )
-        body = _replace_property(
-            body,
-            "FileName",
-            f"{file_elems}\n        <Domain name=\"files\" id=\"31533.FileName.files\"/>",
-        )
-        body = _replace_property(
-            body,
-            "FileNameInfo",
-            f'\n        <Element index="0" value="{escape(csv_files[0])}"/>\n      ',
-        )
+        body = _replace_elements(body, "FileName", file_elems.strip())
+        body = _replace_elements(body, "FileNameInfo", f'<Element index="0" value="{escape(csv_files[0])}"/>')
         timestep_elems = "".join(
             f'\n        <Element index="{i}" value="{i}"/>'
             for i in range(len(csv_files))
         )
-        body = _replace_property(body, "TimestepValues", f"{timestep_elems}\n      ")
+        body = _replace_elements(body, "TimestepValues", timestep_elems.strip())
         return body
 
     def update_time_converter(body):
-        body = _replace_property(
-            body,
-            "Scale",
-            f'\n        <Element index="0" value="{scale}"/>\n        <Domain name="range" id="28335.Scale.range"/>\n      ',
-        )
+        body = _replace_elements(body, "Scale", f'<Element index="0" value="{scale}"/>')
         return body
 
     def update_text_source(body):
         text_value = escape(text_block).replace("\n", "&#xa;")
-        body = _replace_property(
-            body,
-            "Text",
-            f'\n        <Element index="0" value="{text_value}"/>\n      ',
-        )
+        body = _replace_elements(body, "Text", f'<Element index="0" value="{text_value}"/>')
         return body
 
     raw = _replace_block(raw, "CSVReader", update_csv_reader)
