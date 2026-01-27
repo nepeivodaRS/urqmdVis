@@ -13,7 +13,7 @@ def reduce_file(input_filename, output_filename=None, progress_cb=None):
 def parse_to_parquet(base_filename, event_num, parquet_output_path, progress_cb=None):
     parser = UrqmdParser(base_filename, event_num, parquet_output_path, progress_cb=progress_cb)
     parser.run()
-    return parquet_output_path
+    return parser.get_metadata()
 
 
 def convert_parquet_to_csv(parquet_path, output_folder, prefix, progress_cb=None):
@@ -53,7 +53,9 @@ def run_pipeline(
         step_idx += 1
         if progress_cb:
             progress_cb("pipeline", step_idx, total_steps, "Parsing to Parquet")
-        parse_to_parquet(base_filename, event_number, str(parquet_file_path), progress_cb=progress_cb)
+        meta = parse_to_parquet(base_filename, event_number, str(parquet_file_path), progress_cb=progress_cb)
+        if progress_cb:
+            progress_cb("meta", 0, 0, meta)
 
     if run_convert:
         step_idx += 1

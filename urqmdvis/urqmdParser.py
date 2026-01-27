@@ -186,6 +186,16 @@ class UrqmdParser:
         gc.collect()
         print("Parsing completed, memory cleaned up.")
 
+    def get_metadata(self):
+        return {
+            "massA": self.massA,
+            "massB": self.massB,
+            "chA": self.chA,
+            "chB": self.chB,
+            "dtime": self.dtime,
+            "tottime": self.tottime,
+        }
+
 if __name__ == "__main__":
     if len(sys.argv) != 4:
         sys.stderr.write("Usage: python urqmdParser.py <input_basename> <event_number> <output_parquet>\n")
