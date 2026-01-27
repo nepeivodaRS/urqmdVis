@@ -1,47 +1,39 @@
-import os
-from f14reducer import F14Reducer
-from urqmdParser import UrqmdParser
-from parquetToCsv import ParquetToCSVConverter
+import argparse
 
-# Input configuration
-filename = "../files/urqmd_AuAu_0-3fm/urqmd_1_14.dat"
-event_name = "event"
-event_number = 9
+from urqmdvis.pipeline import run_pipeline
 
-# Output folder configuration
-parquet_folder = "output_parquet_files"
-csv_folder = "output_csv_files"
-parquet_file_path = f"./{parquet_folder}/{event_name}_{event_number}.parquet"
 
-# Validate input file path
-if not os.path.isfile(filename):
-    raise FileNotFoundError(f"The input file '{filename}' does not exist. Please check the path.")
+def parse_args():
+    parser = argparse.ArgumentParser(description="Run the UrQMD visualization pipeline.")
+    parser.add_argument("input_file", help="Path to the UrQMD .dat file")
+    parser.add_argument("event_number", type=int, help="Event number to process (1-based)")
+    parser.add_argument("--event-name", default="event", help="Prefix for output files")
+    parser.add_argument("--parquet-folder", default="outputs/parquet", help="Folder for Parquet outputs")
+    parser.add_argument("--csv-folder", default="outputs/csv", help="Folder for CSV outputs")
+    parser.add_argument("--skip-reduce", action="store_true", help="Skip the file reduction step")
+    parser.add_argument("--skip-parse", action="store_true", help="Skip the parsing/Parquet step")
+    parser.add_argument("--skip-convert", action="store_true", help="Skip the Parquet to CSV step")
+    return parser.parse_args()
 
-try:
-    # Step 1: File Reduction
-    def reduce_file(input_filename):
-        reducer = F14Reducer(input_filename)
-        reducer.reduce()
-        print("File reduction completed successfully.")
 
-    # Step 2: Parsing and Parquet Conversion
-    def parse_to_parquet(base_filename, event_num, parquet_output_path):
-        parser = UrqmdParser(base_filename, event_num, parquet_output_path)
-        parser.run()
-        print("Parsing and Parquet file creation completed successfully.")
+def main():
+    args = parse_args()
+    run_pipeline(
+        input_file=args.input_file,
+        event_number=args.event_number,
+        event_name=args.event_name,
+        parquet_folder=args.parquet_folder,
+        csv_folder=args.csv_folder,
+        run_reduce=not args.skip_reduce,
+        run_parse=not args.skip_parse,
+        run_convert=not args.skip_convert,
+    )
 
-    # Step 3: CSV Conversion
-    def convert_parquet_to_csv(parquet_path, output_folder, prefix):
-        converter = ParquetToCSVConverter(parquet_path, output_folder, prefix)
-        converter.run()
-        print("CSV conversion completed successfully.")
 
-    # Execute each step in sequence
-    reduce_file(filename)
-    parse_to_parquet(os.path.splitext(filename)[0], event_number, parquet_file_path)
-    convert_parquet_to_csv(parquet_file_path, csv_folder, f"{event_name}{event_number}")
-
-except FileNotFoundError as fnf_error:
-    print(f"File error: {fnf_error}")
-except Exception as e:
-    print(f"An unexpected error occurred: {e}")
+if __name__ == "__main__":
+    try:
+        main()
+    except FileNotFoundError as fnf_error:
+        print(f"File error: {fnf_error}")
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")
