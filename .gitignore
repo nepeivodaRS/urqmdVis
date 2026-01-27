@@ -2,6 +2,7 @@
 *.csv
 *.f14
 *.png
+!assets/urqmdVis-logo.png
 *.mov
 .DS_Store
 __pycache__/
